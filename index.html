@@ -5,31 +5,154 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0d2b20">
 <title>NUUK — Your Daily Ritual</title>
+
 <style>
 :root{--green:#0d2b20;--cream:#f7f0e3;--tan:#dfc49a;--ink:#18201c;--muted:#6e756f;--white:#fff}
-*{box-sizing:border-box}body{margin:0;background:#eee9df;color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:#eee9df;color:var(--ink);font-family:Arial,Helvetica,sans-serif}
 .app{max-width:480px;margin:auto;min-height:100vh;background:var(--cream);box-shadow:0 0 35px #0002}
+
 header{background:var(--green);color:white;padding:26px 20px 22px;position:sticky;top:0;z-index:10}
-.brand{font-size:42px;font-weight:900;letter-spacing:3px}.tag{letter-spacing:3px;font-size:11px;opacity:.8;margin-top:2px}
-.topline{display:flex;justify-content:space-between;align-items:end}.leaf{font-size:28px}
+.brand{font-size:42px;font-weight:900;letter-spacing:3px}
+.tag{letter-spacing:3px;font-size:11px;opacity:.8;margin-top:2px}
+.topline{display:flex;justify-content:space-between;align-items:end}
+.leaf{font-size:28px}
 .search{margin-top:18px;background:#ffffff18;border:1px solid #ffffff35;border-radius:14px;padding:12px 14px;color:white;width:100%;outline:none}
 .search::placeholder{color:#ffffffaa}
-.hero{padding:22px 18px 8px}.hero h1{font-family:Georgia,serif;font-size:30px;margin:0 0 7px}.hero p{color:var(--muted);margin:0;line-height:1.5;font-size:14px}
-.chips{display:flex;gap:8px;overflow:auto;padding:16px 18px 10px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
-.chip{border:1px solid #cfc5b3;background:#fff8;border-radius:999px;padding:9px 13px;white-space:nowrap;font-size:12px}.chip.active{background:var(--green);color:white;border-color:var(--green)}
-.section{padding:12px 18px}.section-title{display:flex;align-items:center;gap:10px;margin:8px 0 13px}.icon{width:38px;height:38px;border-radius:50%;background:var(--green);color:white;display:grid;place-items:center}.section-title h2{margin:0;font-family:Georgia,serif;font-size:23px}.line{height:1px;background:#cfc5b3;flex:1}
-.card{display:flex;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px dashed #cfc5b3}.info{flex:1}.name{font-weight:700;font-size:15px}.desc{font-size:12px;color:var(--muted);line-height:1.35;margin-top:4px}.price{font-weight:800;white-space:nowrap;font-size:14px}.veg{font-size:10px;color:#286b43;margin-left:5px}
+
+.hero{padding:22px 18px 8px}
+.hero h1{font-family:Georgia,serif;font-size:30px;margin:0 0 7px}
+.hero p{color:var(--muted);margin:0;line-height:1.5;font-size:14px}
+
+.chips{display:flex;gap:8px;overflow:auto;padding:16px 18px 10px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{border:1px solid #cfc5b3;background:#fff8;border-radius:999px;padding:9px 13px;white-space:nowrap;font-size:12px}
+.chip.active{background:var(--green);color:white;border-color:var(--green)}
+
+.section{padding:12px 18px}
+.section-title{display:flex;align-items:center;gap:10px;margin:8px 0 13px}
+.icon{width:38px;height:38px;border-radius:50%;background:var(--green);color:white;display:grid;place-items:center}
+.section-title h2{margin:0;font-family:Georgia,serif;font-size:23px}
+.line{height:1px;background:#cfc5b3;flex:1}
+
+.card{display:flex;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px dashed #cfc5b3}
+.info{flex:1}
+.name{font-weight:700;font-size:15px}
+.desc{font-size:12px;color:var(--muted);line-height:1.35;margin-top:4px}
+.price{font-weight:800;white-space:nowrap;font-size:14px}
+.veg{font-size:10px;color:#286b43;margin-left:5px}
 .add{margin-top:8px;border:1px solid var(--green);background:transparent;color:var(--green);border-radius:8px;padding:5px 9px;font-size:11px}
-.footer{background:var(--green);color:white;padding:22px 18px;text-align:center;margin-top:18px;font-size:11px;letter-spacing:1px}.footer div{margin:7px 0}
-.cart{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);width:min(444px,calc(100% - 28px));background:var(--green);color:white;padding:13px 16px;border-radius:16px;display:none;justify-content:space-between;align-items:center;box-shadow:0 8px 25px #0004;z-index:20}.cart.show{display:flex}.order{background:#d9b77e;color:#17251d;border:0;padding:9px 13px;border-radius:10px;font-weight:800}
+
+.footer{background:var(--green);color:white;padding:22px 18px;text-align:center;margin-top:18px;font-size:11px;letter-spacing:1px}
+.footer div{margin:7px 0}
+
+.cart{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);width:min(444px,calc(100% - 28px));background:var(--green);color:white;padding:13px 16px;border-radius:16px;display:none;justify-content:space-between;align-items:center;box-shadow:0 8px 25px #0004;z-index:20}
+.cart.show{display:flex}
+.order{background:#d9b77e;color:#17251d;border:0;padding:9px 13px;border-radius:10px;font-weight:800}
 .noresult{padding:25px 18px;color:var(--muted);display:none}
+
+/* ORDER POPUP */
+.modal{
+  position:fixed;
+  inset:0;
+  background:#0008;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:100;
+  padding:20px;
+}
+
+.modal.show{display:flex}
+
+.modal-box{
+  width:100%;
+  max-width:400px;
+  background:var(--cream);
+  border-radius:20px;
+  padding:24px;
+  box-shadow:0 15px 50px #0006;
+}
+
+.modal-title{
+  font-family:Georgia,serif;
+  font-size:26px;
+  margin:0 0 5px;
+  color:var(--green);
+}
+
+.modal-subtitle{
+  color:var(--muted);
+  font-size:13px;
+  margin:0 0 22px;
+}
+
+.field{
+  margin-bottom:16px;
+}
+
+.field label{
+  display:block;
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:7px;
+  color:var(--ink);
+}
+
+.field input{
+  width:100%;
+  padding:13px 14px;
+  border:1px solid #cfc5b3;
+  border-radius:12px;
+  background:white;
+  font-size:14px;
+  outline:none;
+}
+
+.field input:focus{
+  border-color:var(--green);
+}
+
+.confirm{
+  width:100%;
+  padding:13px;
+  border:0;
+  border-radius:12px;
+  background:var(--green);
+  color:white;
+  font-weight:800;
+  font-size:14px;
+  margin-top:4px;
+}
+
+.cancel{
+  width:100%;
+  padding:11px;
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  font-size:13px;
+  margin-top:5px;
+}
 </style>
 </head>
+
 <body>
+
 <div class="app">
+
 <header>
-  <div class="topline"><div><div class="brand">NUUK</div><div class="tag">YOUR DAILY RITUAL</div></div><div class="leaf">◌</div></div>
-  <input id="search" class="search" placeholder="Search bowls, coffee, smoothies..." oninput="render()">
+  <div class="topline">
+    <div>
+      <div class="brand">NUUK</div>
+      <div class="tag">YOUR DAILY RITUAL</div>
+    </div>
+    <div class="leaf">◌</div>
+  </div>
+
+  <input id="search" class="search"
+    placeholder="Search bowls, coffee, smoothies..."
+    oninput="render()">
 </header>
 
 <div class="hero">
@@ -46,92 +169,58 @@ header{background:var(--green);color:white;padding:26px 20px 22px;position:stick
   <div>MADE FRESH DAILY</div>
   <div>◎ @NUUK.KANPUR</div>
 </div>
+
 </div>
 
+<!-- CART -->
 <div id="cart" class="cart">
-  <div><b id="count">0</b> items &nbsp; • &nbsp; ₹<b id="total">0</b></div>
-  <button class="order" onclick="orderWhatsApp()">Order on WhatsApp</button>
+  <div>
+    <b id="count">0</b> items &nbsp; • &nbsp; ₹<b id="total">0</b>
+  </div>
+  <button class="order" onclick="openOrderForm()">Order on WhatsApp</button>
+</div>
+
+<!-- ORDER DETAILS POPUP -->
+<div id="orderModal" class="modal">
+
+  <div class="modal-box">
+
+    <h2 class="modal-title">NUUK ORDER</h2>
+    <p class="modal-subtitle">Please enter your details before placing the order.</p>
+
+    <div class="field">
+      <label for="guestName">GUEST NAME</label>
+      <input
+        id="guestName"
+        type="text"
+        placeholder="Enter your name"
+        autocomplete="name">
+    </div>
+
+    <div class="field">
+      <label for="tableNumber">TABLE NUMBER</label>
+      <input
+        id="tableNumber"
+        type="text"
+        inputmode="numeric"
+        placeholder="Enter table number">
+    </div>
+
+    <button class="confirm" onclick="confirmOrder()">
+      CONFIRM ORDER
+    </button>
+
+    <button class="cancel" onclick="closeOrderForm()">
+      Cancel
+    </button>
+
+  </div>
+
 </div>
 
 <script>
+
 const data = [
 ["Bowls","🥣","Mexican Rice Bowl","Herbed rice, crisp greens, corn salsa, cucumber and smoky fajitas, finished with beans, sour cream, nachos and lemon.",199999],
 ["Bowls","🥣","Tandoori Paneer Bowl","Herbed rice, spiced paneer, smoky fajitas, fresh salsa and pickled onion, finished with creamy tandoori and mint yogurt sauces.",169],
-["Bowls","🥣","Lebanese Bowl","Quinoa, hummus, crisp greens, chickpeas and pickled vegetables, finished with olive oil and paprika.",169],
-["Bowls","🥣","Creamy Mushroom Bowl","Herb rice, crisp greens, corn salsa, cucumber and smoky fajitas, topped with creamy mushrooms, sour cream and sesame.",199],
-["Salads","🥗","Super Sprout Salad","Fresh greens, sprouts, carrot, beetroot and cucumber tossed with salsa, lemon and chaat masala, finished with green sauce and peanuts.",129],
-["Salads","🍕","Mexican Pizza","Crisp greens, cucumber and purple cabbage with beans, corn salsa and sour cream, finished with crushed nachos.",1009],
-["Salads","🥗","Mexican Crunch","Crisp greens, cucumber and purple cabbage with beans, corn salsa and sour cream, finished with crushed nachos.",129],
-["Salads","🥗","Mediterranean Harvest","Quinoa, hummus, crisp greens, chickpeas and pickled vegetables, finished with sour cream, olive oil and paprika.",159],
-["Salads","🥗","Smoky Paneer Salad","Crisp greens, cucumber, carrot and smoky fajitas with paneer, finished with creamy tandoori and mint sauces.",159],
-["Wraps","🌯","Burrito Wrap","Rice, beans, corn, salsa and smoky fajitas wrapped with crisp greens and creamy sour cream.",99],
-["Wraps","🌯","Tandoori Paneer Wrap","Spiced paneer, crisp greens, smoky fajitas and salsa with pickled onion, tandoori and mint sauces.",129],
-["Wraps","🌯","Falafel Wrap","Hummus, falafel, crisp greens, chickpeas and pickled vegetables, finished with hot sauce and sour cream.",139],
-["Wraps","🌯","Mushroom Wrap","Creamy mushrooms with crisp iceberg, smoky fajitas and red onion, finished with smooth sour cream.",139],
-["Breads","🥪","Pita Pocket","Hummus, falafel, chickpeas and crisp greens with pickled vegetables, hot sauce and paprika.",79],
-["Breads","🥪","Paneer Subwich","Paneer, crisp greens, smoky fajitas, cucumber and onion, finished with tandoori and mint sauces.",129],
-["Breads","🥪","Mushroom Subwich","Creamy mushrooms, crisp greens, smoky fajitas and red onion layered with signature sour cream.",139],
-["Coffee & Signature Drinks","☕","Fridge Cigarette","Bold coffee shaken over ice with crisp, refreshing Diet Coke.",99],
-["Coffee & Signature Drinks","☕","Old School Coffee","Everyone's favourite cold coffee.",119],
-["Coffee & Signature Drinks","☕","Hazelnut Coffee","Classic cold coffee with a smooth, nutty hazelnut finish.",129],
-["Coffee & Signature Drinks","☕","Cinnamon Iced Latte","Iced coffee with cinnamon-infused milk and silky cold foam.",149],
-["Coffee & Signature Drinks","☕","OG Vietnamese","Bold coffee with creamy condensed milk, ice and silky cold foam.",149],
-["Coffee & Signature Drinks","☕","Mango Matcha","Fresh Alphonso mango layered with milk, ice and smooth cold matcha foam.",249],
-["Smoothies","🥤","Mango Smoothie","Creamy Alphonso mango blended with Greek yogurt and honey.",169],
-["Smoothies","🥤","Tropical Smoothie","A creamy blend of pineapple, mango and banana with Greek yogurt and honey.",169],
-["Smoothies","🥤","Mixed Berry Smoothie","Strawberry and blueberry blended with creamy Greek yogurt and honey.",199],
-["Smoothie Bowls","🍓","Mango Smoothie Bowl","Creamy Alphonso mango and Greek yogurt topped with chocolate almond crunch, coconut, chia and fresh banana.",225],
-["Smoothie Bowls","🍓","Tropical Smoothie Bowl","A creamy blend of mango, pineapple and banana topped with chocolate almond crunch, coconut, chia and fresh banana.",225],
-["Smoothie Bowls","🍓","Mixed Berry Smoothie Bowl","Strawberry and blueberry blended with Greek yogurt and honey, topped with chocolate almond crunch, coconut, chia and fresh banana.",249],
-["Pizza","🍕","Capsicum Capsicum Pizza","Fresh capsicum with classic pizza toppings.",299],
-["Pizza","🍕","My Name Pizza","A signature NUUK pizza.",399],
-["Pizza","🍕","Tomato Pizza","Fresh tomato with classic pizza toppings.",599],
-["Pizza","🍕","Farmhouse Pizza","A loaded farmhouse-style vegetarian pizza.",1099]
-];
-
-let selected="All", cart=[];
-const cats=["All",...new Set(data.map(x=>x[0]))];
-
-function renderChips(){
- document.getElementById("chips").innerHTML=cats.map(c=>`<button class="chip ${c===selected?'active':''}" onclick="selected='${c.replace(/'/g,"\\'")}';render()">${c}</button>`).join("");
-}
-function render(){
- renderChips();
- const q=document.getElementById("search").value.toLowerCase().trim();
- const filtered=data.filter(x=>(selected==="All"||x[0]===selected) && (!q || (x[2]+" "+x[3]).toLowerCase().includes(q)));
- const groups={};
- filtered.forEach(x=>(groups[x[0]]??=[]).push(x));
- const menu=document.getElementById("menu"); menu.innerHTML="";
- Object.entries(groups).forEach(([cat,items])=>{
-   const sec=document.createElement("section");sec.className="section";
-   sec.innerHTML=`<div class="section-title"><div class="icon">${items[0][1]}</div><h2>${cat}</h2><div class="line"></div></div>`;
-   items.forEach(item=>{
-     const [c,ic,n,d,p]=item;
-     const el=document.createElement("div");el.className="card";
-     el.innerHTML=`<div class="info"><div class="name">${n}<span class="veg">◉</span></div><div class="desc">${d}</div><button class="add" onclick='addItem(${JSON.stringify(n)},${p})'>+ Add</button></div><div class="price">₹${p}</div>`;
-     sec.appendChild(el);
-   });
-   menu.appendChild(sec);
- });
- document.getElementById("noresult").style.display=filtered.length?"none":"block";
- updateCart();
-}
-function addItem(name,price){cart.push({name,price});updateCart()}
-function updateCart(){
- let total=cart.reduce((a,x)=>a+x.price,0);
- document.getElementById("count").textContent=cart.length;
- document.getElementById("total").textContent=total;
- document.getElementById("cart").classList.toggle("show",cart.length>0);
-}
-function orderWhatsApp(){
- const grouped={};cart.forEach(x=>grouped[x.name]=(grouped[x.name]||0)+1);
- const lines=Object.entries(grouped).map(([n,q])=>`${q}x ${n}`).join("\n");
- const total=cart.reduce((a,x)=>a+x.price,0);
- const text=`Hi NUUK! I'd like to order:\n${lines}\n\nTotal: ₹${total}`;
- // Replace the number below with NUUK's actual WhatsApp number.
- window.open("https://wa.me/917706000190?text="+encodeURIComponent(text),"_blank");
-}
-render();
-</script>
-</body>
-</html>
+["Bowls","🥣","Leb
