@@ -16,7 +16,9 @@
   --white:#fff
 }
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box
+}
 
 body{
   margin:0;
@@ -243,9 +245,28 @@ header{
 
 .cart-summary{
   display:flex;
-  justify-content:space-between;
-  align-items:center;
+  flex-direction:column;
+  gap:6px;
   font-size:14px
+}
+
+.summary-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center
+}
+
+.summary-row.gst{
+  font-size:13px;
+  opacity:.85
+}
+
+.summary-row.total{
+  font-size:17px;
+  font-weight:800;
+  border-top:1px solid #ffffff30;
+  padding-top:8px;
+  margin-top:3px
 }
 
 .cart-fields{
@@ -277,10 +298,15 @@ header{
   background:#d9b77e;
   color:#17251d;
   border:0;
-  padding:11px 13px;
+  padding:13px;
   border-radius:10px;
   font-weight:800;
-  font-size:13px
+  font-size:14px;
+  cursor:pointer
+}
+
+.order:active{
+  transform:scale(.98)
 }
 
 .noresult{
@@ -317,7 +343,6 @@ header{
 
 </header>
 
-
 <div class="hero">
 
   <h1>Real ingredients. Bold flavours.</h1>
@@ -328,7 +353,6 @@ header{
 
 </div>
 
-
 <div class="chips" id="chips"></div>
 
 <div id="menu"></div>
@@ -336,7 +360,6 @@ header{
 <div id="noresult" class="noresult">
   No menu items found.
 </div>
-
 
 <div class="footer">
 
@@ -363,10 +386,24 @@ header{
 
   <div class="cart-summary">
 
-    <div>
-      <b id="count">0</b> items
-      &nbsp; • &nbsp;
-      ₹<b id="total">0</b>
+    <div class="summary-row">
+      <span>Subtotal</span>
+      <span>₹<b id="subtotal">0.00</b></span>
+    </div>
+
+    <div class="summary-row gst">
+      <span>GST (18%)</span>
+      <span>₹<b id="gst">0.00</b></span>
+    </div>
+
+    <div class="summary-row total">
+      <span>
+        <b id="count">0</b> items
+      </span>
+
+      <span>
+        ₹<b id="total">0.00</b>
+      </span>
     </div>
 
   </div>
@@ -393,13 +430,13 @@ header{
   </div>
 
 
-  <!-- WHATSAPP BUTTON -->
+  <!-- UPI PAYMENT BUTTON -->
 
   <button
     class="order"
-    onclick="orderWhatsApp()"
+    onclick="payViaUPI()"
   >
-    Order on WhatsApp
+    Pay via UPI
   </button>
 
 </div>
@@ -417,7 +454,6 @@ const data = [
 
 ["Bowls","🥣","Creamy Mushroom Bowl","Herb rice, crisp greens, corn salsa, cucumber and smoky fajitas, topped with creamy mushrooms, sour cream and sesame.",199],
 
-
 ["Salads","🥗","Super Sprout Salad","Fresh greens, sprouts, carrot, beetroot and cucumber tossed with salsa, lemon and chaat masala, finished with green sauce and peanuts.",129],
 
 ["Salads","🍕","Mexican Pizza","Crisp greens, cucumber and purple cabbage with beans, corn salsa and sour cream, finished with crushed nachos.",1009],
@@ -428,7 +464,6 @@ const data = [
 
 ["Salads","🥗","Smoky Paneer Salad","Crisp greens, cucumber, carrot and smoky fajitas with paneer, finished with creamy tandoori and mint sauces.",159],
 
-
 ["Wraps","🌯","Burrito Wrap","Rice, beans, corn, salsa and smoky fajitas wrapped with crisp greens and creamy sour cream.",99],
 
 ["Wraps","🌯","Tandoori Paneer Wrap","Spiced paneer, crisp greens, smoky fajitas and salsa with pickled onion, tandoori and mint sauces.",129],
@@ -437,13 +472,11 @@ const data = [
 
 ["Wraps","🌯","Mushroom Wrap","Creamy mushrooms with crisp iceberg, smoky fajitas and red onion, finished with smooth sour cream.",139],
 
-
 ["Breads","🥪","Pita Pocket","Hummus, falafel, chickpeas and crisp greens with pickled vegetables, hot sauce and paprika.",79],
 
 ["Breads","🥪","Paneer Subwich","Paneer, crisp greens, smoky fajitas, cucumber and onion, finished with tandoori and mint sauces.",129],
 
 ["Breads","🥪","Mushroom Subwich","Creamy mushrooms, crisp greens, smoky fajitas and red onion layered with signature sour cream.",139],
-
 
 ["Coffee & Signature Drinks","☕","Fridge Cigarette","Bold coffee shaken over ice with crisp, refreshing Diet Coke.",99],
 
@@ -457,20 +490,17 @@ const data = [
 
 ["Coffee & Signature Drinks","☕","Mango Matcha","Fresh Alphonso mango layered with milk, ice and smooth cold matcha foam.",249],
 
-
 ["Smoothies","🥤","Mango Smoothie","Creamy Alphonso mango blended with Greek yogurt and honey.",169],
 
 ["Smoothies","🥤","Tropical Smoothie","A creamy blend of pineapple, mango and banana with Greek yogurt and honey.",169],
 
 ["Smoothies","🥤","Mixed Berry Smoothie","Strawberry and blueberry blended with creamy Greek yogurt and honey.",199],
 
-
 ["Smoothie Bowls","🍓","Mango Smoothie Bowl","Creamy Alphonso mango and Greek yogurt topped with chocolate almond crunch, coconut, chia and fresh banana.",225],
 
 ["Smoothie Bowls","🍓","Tropical Smoothie Bowl","A creamy blend of mango, pineapple and banana topped with chocolate almond crunch, coconut, chia and fresh banana.",225],
 
 ["Smoothie Bowls","🍓","Mixed Berry Smoothie Bowl","Strawberry and blueberry blended with Greek yogurt and honey, topped with chocolate almond crunch, coconut, chia and fresh banana.",249],
-
 
 ["Pizza","🍕","Capsicum Capsicum Pizza","Fresh capsicum with classic pizza toppings.",299],
 
@@ -483,14 +513,13 @@ const data = [
 ];
 
 
-let selected="All";
+let selected = "All";
+let cart = [];
 
-let cart=[];
 
-
-const cats=[
+const cats = [
   "All",
-  ...new Set(data.map(x=>x[0]))
+  ...new Set(data.map(x => x[0]))
 ];
 
 
@@ -502,7 +531,7 @@ function renderChips(){
 
       `<button
         class="chip ${c===selected?'active':''}"
-        onclick="selected='${c.replace(/'/g,"\\'")}';render()"
+        onclick="selected=${JSON.stringify(c)};render()"
       >
         ${c}
       </button>`
@@ -540,21 +569,25 @@ function render(){
   );
 
 
-  const groups={};
+  const groups = {};
 
 
-  filtered.forEach(x =>
+  filtered.forEach(x => {
 
-    (groups[x[0]] ??= []).push(x)
+    if(!groups[x[0]]){
+      groups[x[0]] = [];
+    }
 
-  );
+    groups[x[0]].push(x);
+
+  });
 
 
   const menu =
     document.getElementById("menu");
 
 
-  menu.innerHTML="";
+  menu.innerHTML = "";
 
 
   Object.entries(groups).forEach(
@@ -563,7 +596,7 @@ function render(){
       const sec =
         document.createElement("section");
 
-      sec.className="section";
+      sec.className = "section";
 
 
       sec.innerHTML =
@@ -591,7 +624,7 @@ function render(){
         const el =
           document.createElement("div");
 
-        el.className="card";
+        el.className = "card";
 
 
         el.innerHTML =
@@ -655,19 +688,35 @@ function addItem(name,price){
 
 function updateCart(){
 
-  const total =
+  const subtotal =
     cart.reduce(
-      (a,x)=>a+x.price,
+      (a,x) => a + x.price,
       0
     );
+
+
+  const gst =
+    subtotal * 0.18;
+
+
+  const total =
+    subtotal + gst;
 
 
   document.getElementById("count").textContent =
     cart.length;
 
 
+  document.getElementById("subtotal").textContent =
+    subtotal.toFixed(2);
+
+
+  document.getElementById("gst").textContent =
+    gst.toFixed(2);
+
+
   document.getElementById("total").textContent =
-    total;
+    total.toFixed(2);
 
 
   document.getElementById("cart")
@@ -679,9 +728,9 @@ function updateCart(){
 }
 
 
-/* WHATSAPP ORDER */
+/* DIRECT UPI PAYMENT */
 
-function orderWhatsApp(){
+function payViaUPI(){
 
   const guestName =
     document
@@ -727,71 +776,85 @@ function orderWhatsApp(){
   }
 
 
-  /* GROUP ITEMS */
+  if(cart.length === 0){
 
-  const grouped={};
+    alert("Please add at least one item.");
 
+    return;
 
-  cart.forEach(x => {
-
-    grouped[x.name] =
-      (grouped[x.name] || 0) + 1;
-
-  });
+  }
 
 
-  const lines =
+  /* CALCULATE GST */
 
-    Object.entries(grouped)
-
-      .map(
-        ([name,quantity]) =>
-          `${quantity}x ${name}`
-      )
-
-      .join("\n");
-
-
-  /* TOTAL */
-
-  const total =
+  const subtotal =
     cart.reduce(
-      (a,x)=>a+x.price,
+      (a,x) => a + x.price,
       0
     );
 
 
-  /* WHATSAPP MESSAGE */
-
-  const text =
-
-`Hi NUUK! I'd like to order:
-
-Guest Name: ${guestName}
-Table Number: ${tableNumber}
-
-${lines}
-
-Total: ₹${total}`;
+  const gst =
+    subtotal * 0.18;
 
 
-  /* NUUK WHATSAPP NUMBER */
-
-  const whatsappNumber =
-    "917706000190";
+  const total =
+    subtotal + gst;
 
 
-  const url =
-    "https://wa.me/" +
-    whatsappNumber +
-    "?text=" +
-    encodeURIComponent(text);
+  /*
+    UPI amount must be a valid
+    2-decimal number.
+  */
+
+  const amount =
+    total.toFixed(2);
 
 
-  window.open(
-    url,
-    "_blank"
-  );
+  /* CREATE ORDER REFERENCE */
+
+  const orderId =
+    "NUUK-" +
+    Date.now();
+
+
+  /*
+    UPI TRANSACTION NOTE
+
+    This may be displayed by the
+    customer's UPI app/bank.
+  */
+
+  const note =
+    `NUUK Order ${orderId} | Table ${tableNumber} | ${guestName}`;
+
+
+  /*
+    YOUR RECEIVING UPI ID
+  */
+
+  const upiId =
+    "7007013234@fam";
+
+
+  /*
+    DIRECT UPI INTENT LINK
+  */
+
+  const upiUrl =
+    "upi://pay" +
+    "?pa=" + encodeURIComponent(upiId) +
+    "&pn=" + encodeURIComponent("NUUK") +
+    "&am=" + encodeURIComponent(amount) +
+    "&cu=INR" +
+    "&tn=" + encodeURIComponent(note);
+
+
+  /*
+    OPEN UPI APP
+  */
+
+  window.location.href = upiUrl;
 
 }
 
