@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0d2b20">
+<title>NUUK — Your Daily Ritual</title>
+<style>
+:root{--green:#0d2b20;--cream:#f7f0e3;--tan:#dfc49a;--ink:#18201c;--muted:#6e756f;--white:#fff;--border:#d7cdbd}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#eee9df;color:var(--ink);font-family:Arial,Helvetica,sans-serif}button,input{font:inherit}
+.app{max-width:480px;margin:auto;min-height:100vh;background:var(--cream);box-shadow:0 0 35px #0002;padding-bottom:90px}
+header{background:var(--green);color:white;padding:24px 20px 20px;position:sticky;top:0;z-index:50}
+.topline{display:flex;justify-content:space-between;align-items:center}.brand{font-size:42px;font-weight:900;letter-spacing:3px}.tag{letter-spacing:3px;font-size:10px;opacity:.8;margin-top:2px}.cafe-name{margin-top:8px;font-size:13px;opacity:.85}.leaf{font-size:30px}
+.search{margin-top:18px;background:#ffffff18;border:1px solid #ffffff35;border-radius:14px;padding:12px 14px;color:white;width:100%;outline:none}.search::placeholder{color:#ffffffaa}
+.page{display:none}.page.active{display:block}.home{padding:22px 18px 10px}.home h1{font-family:Georgia,serif;font-size:30px;margin:0 0 7px}.home p{color:var(--muted);margin:0;line-height:1.5;font-size:14px}
+.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}.action{border:1px solid var(--border);background:#fff8;border-radius:17px;padding:17px 14px;text-align:left;cursor:pointer;color:var(--ink)}.action:active{transform:scale(.98)}
+.action-icon{width:40px;height:40px;display:grid;place-items:center;border-radius:50%;background:var(--green);color:white;font-size:19px;margin-bottom:10px}.action strong{display:block;font-size:14px}.action span{display:block;color:var(--muted);font-size:11px;margin-top:4px}
+.bottom-nav{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);width:min(450px,calc(100% - 24px));background:var(--green);border-radius:20px;padding:9px;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;z-index:100;box-shadow:0 8px 30px #0004}
+.nav-btn{border:0;background:transparent;color:white;padding:8px 3px;border-radius:12px;font-size:10px;cursor:pointer}.nav-btn.active{background:#ffffff18}.nav-icon{display:block;font-size:17px;margin-bottom:3px}
+.profile-page{padding:25px 18px}.profile-card{background:white;border:1px solid var(--border);border-radius:20px;padding:22px}.profile-logo{width:72px;height:72px;border-radius:20px;background:var(--green);color:white;display:grid;place-items:center;font-size:25px;font-weight:900;margin-bottom:15px}.profile-card h2{font-family:Georgia,serif;margin:0;font-size:27px}.profile-card p{color:var(--muted);line-height:1.5;font-size:13px}
+.link-btn{width:100%;border:1px solid var(--green);background:transparent;color:var(--green);padding:13px;border-radius:11px;margin-top:9px;font-weight:700;cursor:pointer}.link-btn.primary{background:var(--green);color:white}
+.section{padding:12px 18px}.chips{display:flex;gap:8px;overflow:auto;padding:16px 18px 10px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}.chip{border:1px solid var(--border);background:#fff8;border-radius:999px;padding:9px 13px;white-space:nowrap;font-size:12px;cursor:pointer}.chip.active{background:var(--green);color:white;border-color:var(--green)}
+.card{display:flex;justify-content:space-between;gap:12px;padding:14px 18px;border-bottom:1px dashed var(--border)}.info{flex:1}.name{font-weight:700;font-size:15px}.desc{font-size:12px;color:var(--muted);line-height:1.35;margin-top:4px}.price{font-weight:800;white-space:nowrap;font-size:14px}.veg{font-size:10px;color:#286b43;margin-left:5px}.add{margin-top:8px;border:1px solid var(--green);background:transparent;color:var(--green);border-radius:8px;padding:5px 9px;font-size:11px;cursor:pointer}
+.loyalty{padding:25px 18px}.loyalty-box{background:var(--green);color:white;border-radius:22px;padding:22px;box-shadow:0 10px 25px #0002}.loyalty-brand{font-size:11px;letter-spacing:3px;opacity:.75}.loyalty-title{font-family:Georgia,serif;font-size:27px;margin-top:7px}.loyalty-sub{font-size:12px;opacity:.75;line-height:1.5;margin-top:6px}.stamps{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-top:22px}.stamp{aspect-ratio:1;border-radius:50%;border:1px dashed #ffffff70;display:grid;place-items:center;font-size:18px;background:#ffffff08}.stamp.filled{background:var(--tan);color:var(--green);border-color:var(--tan)}.reward{margin-top:18px;background:#ffffff12;border-radius:12px;padding:12px;font-size:12px}.loyalty-login{margin-top:15px;width:100%;padding:12px;border:0;border-radius:10px;background:var(--tan);color:var(--green);font-weight:800;cursor:pointer}
+.cart{position:fixed;bottom:85px;left:50%;transform:translateX(-50%);width:min(444px,calc(100% - 28px));background:var(--green);color:white;padding:14px 16px;border-radius:16px;display:none;flex-direction:column;gap:10px;box-shadow:0 8px 25px #0004;z-index:90}.cart.show{display:flex}.cart-summary{display:flex;flex-direction:column;gap:6px;font-size:14px}.summary-row{display:flex;justify-content:space-between}.summary-row.gst{font-size:13px;opacity:.85}.summary-row.total{font-size:17px;font-weight:800;border-top:1px solid #ffffff30;padding-top:8px}.cart-fields{display:flex;gap:8px}.cart-fields input{width:50%;padding:10px 11px;border:1px solid var(--border);border-radius:10px;outline:none;font-size:12px}.order{width:100%;background:var(--tan);color:#17251d;border:0;padding:13px;border-radius:10px;font-weight:800;cursor:pointer}
+.footer{background:var(--green);color:white;padding:22px 18px;text-align:center;margin-top:18px;font-size:11px;letter-spacing:1px}.footer div{margin:7px 0}.noresult{padding:25px 18px;color:var(--muted);display:none}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+<div class="topline"><div><div class="brand">NUUK</div><div class="tag">YOUR DAILY RITUAL</div><div class="cafe-name" id="cafeName"></div></div><div class="leaf">◌</div></div>
+<input id="search" class="search" placeholder="Search bowls, coffee, smoothies...">
+</header>
+
+<div id="homePage" class="page active">
+<div class="home">
+<h1>Real ingredients.<br>Bold flavours.</h1>
+<p>Everything you need from your favorite café, all in one tap.</p>
+<div class="action-grid">
+<button class="action" data-page="menuPage"><div class="action-icon">🍽️</div><strong>Digital Menu</strong><span>Browse & order</span></button>
+<button class="action" data-page="loyaltyPage"><div class="action-icon">🎟️</div><strong>Stamp Card</strong><span>Collect rewards</span></button>
+<button class="action" id="instagramHome"><div class="action-icon">📸</div><strong>Instagram</strong><span>Follow the café</span></button>
+<button class="action" id="reviewHome"><div class="action-icon">⭐</div><strong>Review Us</strong><span>Share your experience</span></button>
+</div></div>
+<div class="profile-page"><div class="profile-card">
+<div class="profile-logo">NUUK</div><h2 id="profileCafeName"></h2><p id="profileDescription"></p>
+<button class="link-btn primary" data-page="menuPage">View Digital Menu</button>
+<button class="link-btn" id="reviewProfile">⭐ Leave a Google Review</button>
+<button class="link-btn" id="instagramProfile">📸 Instagram</button>
+</div></div>
+</div>
+
+<div id="menuPage" class="page"><div class="chips" id="chips"></div><div id="menu"></div><div id="noresult" class="noresult">No menu items found.</div></div>
+
+<div id="loyaltyPage" class="page"><div class="loyalty"><div class="loyalty-box">
+<div class="loyalty-brand">NUUK LOYALTY</div><div class="loyalty-title">Your Stamp Card</div>
+<div class="loyalty-sub">Collect 5 stamps and unlock your café reward.</div><div class="stamps" id="stamps"></div>
+<div class="reward" id="rewardText"></div><button class="loyalty-login" id="loyaltyLogin">Login / View My Loyalty</button>
+</div></div></div>
+
+<div id="infoPage" class="page"><div class="profile-page"><div class="profile-card">
+<div class="profile-logo">NUUK</div><h2 id="infoCafeName"></h2><p id="infoDescription"></p>
+<p>📍 <span id="infoAddress"></span></p><p>🕒 <span id="infoHours"></span></p>
+<button class="link-btn primary" id="instagramInfo">📸 Follow on Instagram</button>
+<button class="link-btn" id="reviewInfo">⭐ Review on Google</button>
+</div></div></div>
+
+<div class="footer"><div>🌿 100% VEGETARIAN &nbsp; • &nbsp; NO PRESERVATIVES</div><div>MADE FRESH DAILY</div><div id="footerInstagram"></div></div>
+</div>
+
+<div id="cart" class="cart">
+<div class="cart-summary"><div class="summary-row"><span>Subtotal</span><span>₹<b id="subtotal">0.00</b></span></div>
+<div class="summary-row gst"><span>GST (18%)</span><span>₹<b id="gst">0.00</b></span></div>
+<div class="summary-row total"><span><b id="count">0</b> items</span><span>₹<b id="total">0.00</b></span></div></div>
+<div class="cart-fields"><input id="guestName" type="text" placeholder="Guest Name" autocomplete="name"><input id="tableNumber" type="text" inputmode="numeric" placeholder="Table Number"></div>
+<button class="order" id="payButton">Pay via UPI</button>
+</div>
+
+<div class="bottom-nav">
+<button class="nav-btn active" data-page="homePage" id="navHome"><span class="nav-icon">⌂</span>Home</button>
+<button class="nav-btn" data-page="menuPage" id="navMenu"><span class="nav-icon">☰</span>Menu</button>
+<button class="nav-btn" data-page="loyaltyPage" id="navLoyalty"><span class="nav-icon">🎟</span>Stamps</button>
+<button class="nav-btn" data-page="infoPage" id="navInfo"><span class="nav-icon">ⓘ</span>Info</button>
+</div>
+
+<script>
+'use strict';
+
+const CAFE={
+  name:"NUUK Kanpur",
+  description:"Fresh, wholesome food made for everyday rituals.",
+  address:"Kanpur, Uttar Pradesh",
+  hours:"10:00 AM – 10:00 PM",
+  instagram:"https://www.instagram.com/eatnuuk",
+  googleReview:"https://share.google/C0QSOgYkRaLwjSV5P",
+  upiId:"7007013234@fam",
+  upiName:"NUUK",
+  reward:"Free café item after 5 verified stamps."
+};
+
+const data=[
+["Bowls","🥣","Mexican Rice Bowl","Herbed rice, crisp greens, corn salsa, cucumber and smoky fajitas, finished with beans, sour cream, nachos and lemon.",199],
+["Bowls","🥣","Tandoori Paneer Bowl","Herbed rice, spiced paneer, smoky fajitas, fresh salsa and pickled onion, finished with creamy tandoori and mint yogurt sauces.",169],
+["Bowls","🥣","Lebanese Bowl","Quinoa, hummus, crisp greens, chickpeas and pickled vegetables, finished with olive oil and paprika.",169],
+["Bowls","🥣","Creamy Mushroom Bowl","Herb rice, crisp greens, corn salsa, cucumber and smoky fajitas, topped with creamy mushrooms, sour cream and sesame.",199],
+["Salads","🥗","Super Sprout Salad","Fresh greens, sprouts, carrot, beetroot and cucumber tossed with salsa, lemon and chaat masala, finished with green sauce and peanuts.",129],
+["Salads","🍕","Mexican Pizza","Crisp greens, cucumber and purple cabbage with beans, corn salsa and sour cream, finished with crushed nachos.",109],
+["Salads","🥗","Mexican Crunch","Crisp greens, cucumber and purple cabbage with beans, corn salsa and sour cream, finished with crushed nachos.",129],
+["Salads","🥗","Mediterranean Harvest","Quinoa, hummus, crisp greens, chickpeas and pickled vegetables, finished with sour cream, olive oil and paprika.",159],
+["Salads","🥗","Smoky Paneer Salad","Crisp greens, cucumber, carrot and smoky fajitas with paneer, finished with creamy tandoori and mint sauces.",159],
+["Wraps","🌯","Burrito Wrap","Rice, beans, corn, salsa and smoky fajitas wrapped with crisp greens and creamy sour cream.",99],
+["Wraps","🌯","Tandoori Paneer Wrap","Spiced paneer, crisp greens, smoky fajitas and salsa with pickled onion, tandoori and mint sauces.",129],
+["Wraps","🌯","Falafel Wrap","Hummus, falafel, crisp greens, chickpeas and pickled vegetables, finished with hot sauce and sour cream.",139],
+["Wraps","🌯","Mushroom Wrap","Creamy mushrooms with crisp iceberg, smoky fajitas and red onion, finished with smooth sour cream.",139],
+["Breads","🥪","Pita Pocket","Hummus, falafel, chickpeas and crisp greens with pickled vegetables, hot sauce and paprika.",79],
+["Breads","🥪","Paneer Subwich","Paneer, crisp greens, smoky fajitas, cucumber and onion, finished with tandoori and mint sauces.",129],
+["Breads","🥪","Mushroom Subwich","Creamy mushrooms, crisp greens, smoky fajitas and red onion layered with signature sour cream.",139],
+["Coffee & Signature Drinks","☕","Fridge Cigarette","Bold coffee shaken over ice with crisp, refreshing Diet Coke.",99],
+["Coffee & Signature Drinks","☕","Old School Coffee","Everyone's favourite cold coffee.",119],
+["Coffee & Signature Drinks","☕","Hazelnut Coffee","Classic cold coffee with a smooth, nutty hazelnut finish.",129],
+["Coffee & Signature Drinks","☕","Cinnamon Iced Latte","Iced coffee with cinnamon-infused milk and silky cold foam.",149],
+["Coffee & Signature Drinks","☕","OG Vietnamese","Bold coffee with creamy condensed milk, ice and silky cold foam.",149],
+["Coffee & Signature Drinks","☕","Mango Matcha","Fresh Alphonso mango layered with milk, ice and smooth cold matcha foam.",249],
+["Smoothies","🥤","Mango","Creamy Alphonso mango blended with Greek yogurt and honey.",169],
+["Smoothies","🥤","Tropical","A creamy blend of pineapple, mango and banana with Greek yogurt and honey.",169],
+["Smoothies","🥤","Mixed Berry","Strawberry and blueberry blended with creamy Greek yogurt and honey.",199],
+["Smoothie Bowls","🍓","Mango","Creamy Alphonso mango and Greek yogurt topped with chocolate almond crunch, coconut, chia and fresh banana.",225],
+["Smoothie Bowls","🍓","Tropical","A creamy blend of mango, pineapple and banana topped with chocolate almond crunch, coconut, chia and fresh banana.",225],
+["Smoothie Bowls","🍓","Mixed Berry","Strawberry and blueberry blended with Greek yogurt and honey, topped with chocolate almond crunch, coconut, chia and fresh banana.",249],
+["Pizza","🍕","Capsicum Capsicum Pizza","Fresh capsicum with classic pizza toppings.",299],
+["Pizza","🍕","My Name Pizza","A signature NUUK pizza.",399],
+["Pizza","🍕","Tomato Pizza","Fresh tomato with classic pizza toppings.",599],
+["Pizza","🍕","Farmhouse Pizza","A loaded farmhouse-style vegetarian pizza.",1099]
+];
+
+let selected="All", cart=[];
+
+const $=id=>document.getElementById(id);
+
+function initializeCafe(){
+  $("cafeName").textContent=CAFE.name;
+  $("profileCafeName").textContent=CAFE.name;
+  $("profileDescription").textContent=CAFE.description;
+  $("infoCafeName").textContent=CAFE.name;
+  $("infoDescription").textContent=CAFE.description;
+  $("infoAddress").textContent=CAFE.address;
+  $("infoHours").textContent=CAFE.hours;
+  $("footerInstagram").textContent="◎ @eatnuuk";
+  $("rewardText").textContent="🎁 Reward: "+CAFE.reward;
+}
+
+function showPage(pageId){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  const page=$(pageId); if(page) page.classList.add("active");
+  document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
+  const nav=document.querySelector('.nav-btn[data-page="'+pageId+'"]');
+  if(nav) nav.classList.add("active");
+  window.scrollTo({top:0,behavior:"smooth"});
+  if(pageId==="menuPage") renderMenu();
+}
+
+function openExternal(url){
+  window.open(url,"_blank","noopener,noreferrer");
+}
+function openInstagram(){openExternal(CAFE.instagram)}
+function openReview(){openExternal(CAFE.googleReview)}
+function showLoyalty(){showPage("loyaltyPage")}
+
+function renderChips(){
+  const cats=["All",...new Set(data.map(x=>x[0]))];
+  $("chips").innerHTML=cats.map(c=>'<button class="chip '+(c===selected?"active":"")+'" data-cat="'+escapeHTML(c)+'">'+escapeHTML(c)+'</button>').join("");
+  $("chips").querySelectorAll(".chip").forEach(b=>b.addEventListener("click",()=>{
+    selected=b.dataset.cat; renderChips(); renderMenu();
+  }));
+}
+
+function renderMenu(){
+  const q=$("search").value.trim().toLowerCase();
+  const items=data.filter(x=>(selected==="All"||x[0]===selected)&&
+    (!q||x[2].toLowerCase().includes(q)||x[3].toLowerCase().includes(q)));
+  $("menu").innerHTML=items.map((x,i)=>`
+    <div class="card">
+      <div class="info"><div class="name">${x[1]} ${escapeHTML(x[2])}<span class="veg">● VEG</span></div>
+      <div class="desc">${escapeHTML(x[3])}</div>
+      <button class="add" data-index="${data.indexOf(x)}">+ Add</button></div>
+      <div class="price">₹${x[4]}</div>
+    </div>`).join("");
+  $("noresult").style.display=items.length?"none":"block";
+  $("menu").querySelectorAll(".add").forEach(b=>b.addEventListener("click",()=>addToCart(Number(b.dataset.index))));
+}
+
+function escapeHTML(s){
+  return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+}
+
+function addToCart(index){
+  const item=data[index];
+  cart.push(item);
+  updateCart();
+}
+
+function updateCart(){
+  const subtotal=cart.reduce((sum,x)=>sum+x[4],0);
+  const gst=subtotal*.18;
+  const total=subtotal+gst;
+  $("subtotal").textContent=subtotal.toFixed(2);
+  $("gst").textContent=gst.toFixed(2);
+  $("total").textContent=total.toFixed(2);
+  $("count").textContent=cart.length;
+  $("cart").classList.toggle("show",cart.length>0);
+}
+
+function payViaUPI(){
+  if(!cart.length){alert("Please add an item first.");return;}
+  const name=$("guestName").value.trim();
+  const table=$("tableNumber").value.trim();
+  if(!name||!table){alert("Please enter your name and table number.");return;}
+  const subtotal=cart.reduce((sum,x)=>sum+x[4],0);
+  const amount=(subtotal*1.18).toFixed(2);
+  const note="NUUK Order - "+name+" - Table "+table;
+  const url="upi://pay?pa="+encodeURIComponent(CAFE.upiId)+"&pn="+encodeURIComponent(CAFE.upiName)+"&am="+encodeURIComponent(amount)+"&cu=INR&tn="+encodeURIComponent(note);
+  window.location.href=url;
+}
+
+function renderStamps(){
+  let stamps=Number(localStorage.getItem("nuuk_demo_stamps")||0);
+  stamps=Math.max(0,Math.min(5,stamps));
+  $("stamps").innerHTML=Array.from({length:5},(_,i)=>'<div class="stamp '+(i<stamps?"filled":"")+'">'+(i<stamps?"✓":"☆")+"</div>").join("");
+}
+
+function customerLogin(){
+  alert("The secure loyalty login is not connected yet. This demo keeps stamps on this device only.");
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+  initializeCafe();
+  renderChips();
+  renderMenu();
+  renderStamps();
+
+  document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
+  $("search").addEventListener("input",renderMenu);
+
+  ["instagramHome","instagramProfile","instagramInfo"].forEach(id=>$(id).addEventListener("click",openInstagram));
+  ["reviewHome","reviewProfile","reviewInfo"].forEach(id=>$(id).addEventListener("click",openReview));
+  $("loyaltyLogin").addEventListener("click",customerLogin);
+  $("payButton").addEventListener("click",payViaUPI);
+});
+</script>
+</body>
+</html>
